@@ -1,12 +1,18 @@
 package com.evertvdbruel.helpers;
 
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
+
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 public class InternetHelper {
-	
-	public static boolean hasConnection(Context context) {	
+
+	public static boolean hasConnection(Context context) {
 		ConnectivityManager cm = (ConnectivityManager) context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -28,5 +34,21 @@ public class InternetHelper {
 		}
 
 		return false;
+	}
+
+	public static String getIpV4Address() throws SocketException {
+		for (Enumeration<NetworkInterface> en = NetworkInterface
+				.getNetworkInterfaces(); en.hasMoreElements();) {
+			NetworkInterface intf = en.nextElement();
+			for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr
+					.hasMoreElements();) {
+				InetAddress inetAddress = enumIpAddr.nextElement();
+				if (!inetAddress.isLoopbackAddress()
+						&& inetAddress instanceof Inet4Address) {
+					return inetAddress.getHostAddress();
+				}
+			}
+		}
+		return null;
 	}
 }
