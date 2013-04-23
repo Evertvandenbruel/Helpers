@@ -39,20 +39,25 @@ public class FileHelper {
 		return file.getAbsolutePath();
 	}
 
-	public static Boolean writeByteArrayToFile(byte[] data, String fileName,
-			Context context) throws IOException {
+	public static Boolean writeByteArrayToFile(Context context,
+			String fileName, byte[] data) throws IOException {
 		File file = new File(context.getExternalFilesDir(null), fileName);
+
+		FileHelper.writeByteArrayToFile(file, data);
+
+		return true;
+	}
+
+	public static Boolean writeByteArrayToFile(File file, byte[] data)
+			throws IOException {
 		if (!file.getParentFile().exists()) {
 			if (!file.getParentFile().mkdirs()) {
 				return false;
 			}
 		}
-
-		file.createNewFile();
 		OutputStream outputStream = new FileOutputStream(file);
 		outputStream.write(data);
 		outputStream.close();
-
 		return true;
 	}
 
@@ -64,21 +69,17 @@ public class FileHelper {
 		while ((ze = zis.getNextEntry()) != null) {
 			if (!ze.isDirectory()) {
 				String filename = ze.getName();
-				FileHelper.writeByteArrayToFile(
-						FileHelper.inputStreamToByteArray(zis), filename,
-						context);
+				FileHelper.writeByteArrayToFile(context, filename,
+						FileHelper.inputStreamToByteArray(zis));
 			}
 		}
 	}
 
-	public static void unzipFile(Context context, String fileName) {
-		try {
-			File file = new File(context.getExternalFilesDir(null), fileName);
-			FileHelper.unzipFile(context, new BufferedInputStream(
-					new FileInputStream(file)));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public static void unzipFile(Context context, String fileName)
+			throws FileNotFoundException, IOException {
+		File file = new File(context.getExternalFilesDir(null), fileName);
+		FileHelper.unzipFile(context, new BufferedInputStream(
+				new FileInputStream(file)));
 	}
 
 	public static byte[] getByteArrayFromFile(File file)
