@@ -35,16 +35,14 @@ public class FileHelper {
 	}
 
 	public static String getAbsolutePath(Context context, String fileName) {
-		File file = new File(context.getExternalFilesDir(null), fileName);
+		File file = FileHelper.getFileFromFileName(context, fileName);
 		return file.getAbsolutePath();
 	}
 
 	public static Boolean writeByteArrayToFile(Context context,
 			String fileName, byte[] data) throws IOException {
-		File file = new File(context.getExternalFilesDir(null), fileName);
-
+		File file = FileHelper.getFileFromFileName(context, fileName);
 		FileHelper.writeByteArrayToFile(file, data);
-
 		return true;
 	}
 
@@ -77,7 +75,7 @@ public class FileHelper {
 
 	public static void unzipFile(Context context, String fileName)
 			throws FileNotFoundException, IOException {
-		File file = new File(context.getExternalFilesDir(null), fileName);
+		File file = FileHelper.getFileFromFileName(context, fileName);
 		FileHelper.unzipFile(context, new BufferedInputStream(
 				new FileInputStream(file)));
 	}
@@ -96,8 +94,17 @@ public class FileHelper {
 		return bos.toByteArray();
 	}
 
+	public static Boolean deleteFile(Context context, String fileName) {
+		return true;
+	}
+
 	public static Boolean fileExists(Context context, String fileName) {
-		File file = new File(context.getExternalFilesDir(null), fileName);
+		File file = FileHelper.getFileFromFileName(context, fileName);
 		return file.exists();
 	}
+
+	public static File getFileFromFileName(Context context, String fileName) {
+		return new File(context.getExternalFilesDir(null), fileName);
+	}
+
 }
