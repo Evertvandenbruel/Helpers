@@ -94,7 +94,8 @@ public class FileHelper {
 	}
 
 	public static Boolean deleteFile(Context context, String fileName) {
-		return true;
+		File file = FileHelper.getFileFromFileName(context, fileName);
+		return file.delete();
 	}
 
 	public static Boolean fileExists(Context context, String fileName) {
