@@ -42,8 +42,7 @@ public class FileHelper {
 	public static Boolean writeByteArrayToFile(Context context,
 			String fileName, byte[] data) throws IOException {
 		File file = FileHelper.getFileFromFileName(context, fileName);
-		FileHelper.writeByteArrayToFile(file, data);
-		return true;
+		return FileHelper.writeByteArrayToFile(file, data);
 	}
 
 	public static Boolean writeByteArrayToFile(File file, byte[] data)
