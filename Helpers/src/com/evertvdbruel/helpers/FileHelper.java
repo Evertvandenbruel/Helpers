@@ -63,15 +63,10 @@ public class FileHelper {
 
 		while ((ze = zis.getNextEntry()) != null) {
 			if (!ze.isDirectory()) {
-				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				byte[] buffer = new byte[1024];
-				int count;
-				while ((count = zis.read(buffer)) != -1) {
-					baos.write(buffer, 0, count);
-				}
 				String filename = ze.getName();
-				byte[] bytes = baos.toByteArray();
-				FileHelper.writeByteArrayToFile(bytes, filename, context);
+				FileHelper.writeByteArrayToFile(
+						FileHelper.inputStreamToByteArray(zis), filename,
+						context);
 			}
 		}
 	}
